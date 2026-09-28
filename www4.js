@@ -10,7 +10,7 @@ const dateTimeET = require('./src/dateTimeET.js');
 const wisdomET = require('./src/vanasona.js');
 const pageHead = '<!DOCTYPE html>\n<html lang="et">\n<head>\n\t<meta charset="utf-8">\n\t<title>Kris Mozgovoi | Veebiprogrammeerimine</title>\n</head>\n<body>\n';
 const pageBanner = '\t<img src="veebiprogrammeerimine_2026_AA.png" alt="banner">';
-const pageBody = '\t<h1>Kris Mozgovoi | Veebiprogrammeerimine</h1>\t<p><a href="/vanasona">Vanasõna</a> | <a href="/faq">FAQ</a> | <a href="/pildid">Pildid</a></p>\n\t<p>See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu!</p>\n\t<p>Esialgu tutvusime lihtsalt HTML keelega, peatselt programmeerime.</p>\n\t<hr>\n';
+const pageBody = '\t<h1>Kris Mozgovoi | Veebiprogrammeerimine</h1>\n\t<p>See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu!</p>\n\t<p>Esialgu tutvusime lihtsalt HTML keelega, peatselt programmeerime.</p>\n\t<hr>\n';
 const pageFoot = '\n</body>\n</html>';
 
 http.createServer(async function(req, res){
@@ -26,7 +26,8 @@ http.createServer(async function(req, res){
 		res.write(pageBody);
 		// Leidsin lahenduse mis ei toiminud mul kuni ma asendasin ' märgid ära ` märkidega chatgpt abiga. Kuid me ei ole veel sellest õppinud seega ma ei kasutanud seda.
 		//res.write(`\t<p>Hetkel on ${dateTimeET.dayET()}.</p>\n\t<p>Kuupäev on: ${dateTimeET.dateET()}</p>\n\t<p>Lehekülg avati kell: ${dateTimeET.timeET()}</p>`);
-		res.write('\t<p>Täna on ' + dateTimeET.dayET() + ', ' + dateTimeET.dateET() + '</p>\n\t<p>Lehekülg avati kell: ' + dateTimeET.timeET() + '</p><hr>');
+		res.write('\t<p>Täna on ' + dateTimeET.dayET() + ', ' + dateTimeET.dateET() + '</p>\n\t<p>Lehekülg avati kell: ' + dateTimeET.timeET() + '</p>\n\t<hr>\n');
+		res.write('\t<ul>\n\t<li><a href="/vanasona">Vanasõna</a></li>\n\t<li><a href="/faq">FAQ</a></li>\n\t<li><a href="/pildid">Pildid</a></li>\n\t</ul>\n');
 		res.write('\t<img src="/pic/' + await randomJpg.randomJpgPicture() + '" alt="juhuslik pilt">');
 		res.write(pageFoot);
 		return res.end();
@@ -71,7 +72,7 @@ http.createServer(async function(req, res){
 			}
 		});
 	} */
-	else if(currentURL.pathname.startsWith('/pic/')){
+	else if(path.extname(currentURL.pathname) === '.jpg'){
 		let pictureName = path.basename(currentURL.pathname);
 		let picturePath = path.join(__dirname, 'pic', pictureName);
 		try{
